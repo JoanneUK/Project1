@@ -12,18 +12,26 @@ $.ajax({
         Authorization: `Bearer ${apiKey}`
     }
   }).then(function(response) {
-debugger;
     console.log(response);
-  }).catch(error => {
-      debugger;
   });
 
 
+  $("#btnshya").on("click", function (response) {
+    console.log("was clicked");
+    let userInput = $("#search").val();
+    console.log(userInput);
+let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
+$.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+        let sugarQuantity = Math.floor(response.totalNutrients.SUGAR.quantity);
+        console.log(response.totalNutrients.SUGAR.quantity);
+        let sugarUnit = response.totalNutrients.SUGAR.unit;
+        console.log(response.totalNutrients.SUGAR.unit);
+        let totalSugar = sugarQuantity + sugarUnit;
+        console.log(totalSugar);
 
- 
-function test(x,y)
-let result = x + y;
-console.log(result);
-return result;
-//i didnt change anything
-
+    })
+})
