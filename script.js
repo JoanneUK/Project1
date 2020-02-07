@@ -46,15 +46,11 @@ function doSearch(term, loc) {
 }
 
 $("#findRestaurant").on("click", function () {
-  console.log("was clicked");
-  $.ajax({
-    url: queryURL,
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${apiKey}`
-    }
-  }).then(function (response) {
-    console.log(response);
+
+  let term = $("#search").val();
+
+  doSearch(term, {lat: coords.latitude, lon: coords.longitude});
+  
   });
 
   $("#btnfat").on("click", function () {
@@ -145,7 +141,4 @@ $("#btnMax").on("click", function () {
     </div>`;
     $("#dataarea").prepend(cardData);
   })
-});
-
-}
-
+})
