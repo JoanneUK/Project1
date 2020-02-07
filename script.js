@@ -47,11 +47,76 @@ function doSearch(term, loc) {
 
 $("#findRestaurant").on("click", function () {
   console.log("was clicked");
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${apiKey}`
+    }
+  }).then(function (response) {
+    console.log(response);
+  });
+
+  $("#btnfat").on("click", function () {
+    console.log("was clicked");
+
+    let userInput = $("#search").val();
+    console.log(userInput);
+    let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function (response) {
+      let totFat = Math.floor(response.totalNutrients.FAT.quantity);
+      let fatUnit = response.totalNutrients.FAT.unit;
+      console.log(totFat + fatUnit);
+      let fatData = `
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">${userInput}'s Fat</span>
+            <p>${totFat + fatUnit}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+      $("#dataarea").append(fatData);
+
+    })
+  })
 
   let term = $("#search").val();
   //   let loc = $("#location").val();
 
-  //   doSearch(term,loc)
-  doSearch(term, { lat: coords.latitude, lon: coords.longitude })
-})
+$("#btnshya").on("click", function (response) {
+  console.log("was clicked");
+  let userInput = $("#search").val();
+  console.log(userInput);
+  let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response);
+    let sugarQuantity = Math.floor(response.totalNutrients.SUGAR.quantity);
+    console.log(response.totalNutrients.SUGAR.quantity);
+    let sugarUnit = response.totalNutrients.SUGAR.unit;
+    console.log(response.totalNutrients.SUGAR.unit);
+    let totalSugar = sugarQuantity + sugarUnit;
+    console.log(totalSugar);
+    let cardData = `
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">${userInput}'s Sugar</span>
+            <p>${totalSugar}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $("#dataarea").append(cardData);
+  })
+});
 
