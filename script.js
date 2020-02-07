@@ -28,6 +28,18 @@ $("#btnfat").on("click", function () {
     let totFat = Math.floor(response.totalNutrients.FAT.quantity);
     let fatUnit = response.totalNutrients.FAT.unit;
     console.log(totFat + fatUnit);
+    let fatData = `
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">${userInput}'s Fat</span>
+            <p>${totFat + fatUnit}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $("#dataarea").append(fatData);
 
   })
 })
