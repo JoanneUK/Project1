@@ -23,7 +23,7 @@ function doSearch(term, loc) {
       Authorization: `Bearer ${apiKey}`
     }
   }).then(function (response) {
-    
+
     $("#restoCard").show()
 
     console.log(response);
@@ -148,4 +148,44 @@ $("#btnMax").on("click", function () {
     </div>`;
     $("#dataarea").prepend(cardData);
   })
+})
+
+
+
+
+$("#btnAll").on("click", function () {
+  console.log("all clicked");
+  let userInput = $("#search").val();
+  console.log(userInput);
+  let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
+$.ajax({
+  url: queryURL,
+  method: "GET"
+}).then(function (response) {
+  console.log(response)
+  let totFat = Math.floor(response.totalNutrients.FAT.quantity);
+  let fatUnit = response.totalNutrients.FAT.unit;
+  let sugarQuantity = Math.floor(response.totalNutrients.SUGAR.quantity);
+  let sugarUnit = response.totalNutrients.SUGAR.unit;
+  let totalSugar = sugarQuantity + sugarUnit;
+  let totalCalories = response.calories;
+
+  let cardData = `
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">One ${userInput}</span>
+          <p> Fat: ${totFat}${fatUnit}</p>
+          <p> Sugar: ${totalSugar}</p>
+          <p> Calories: ${totalCalories} </p>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  $("#dataarea").append(cardData);
+}
+)
+
+
 })
