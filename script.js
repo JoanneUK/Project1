@@ -12,10 +12,7 @@ function makelistItem(text) {
   li.text(text);
   let ul = $("#restaurant");
   ul.append(li);
-
 }
-
-//makelistItem('bar');
 
 function doSearch(term, loc) {
   let queryURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&latitude=${loc.lat}&longitude=${loc.lon}`;
@@ -26,6 +23,8 @@ function doSearch(term, loc) {
       Authorization: `Bearer ${apiKey}`
     }
   }).then(function (response) {
+    
+    $("#restoCard").show()
 
     console.log(response);
 
@@ -34,6 +33,8 @@ function doSearch(term, loc) {
     for (i = 0; i < 5; i++) {
       let text = response.businesses[i].name;
       makelistItem(text);
+
+
 
     }
 
@@ -44,29 +45,35 @@ function doSearch(term, loc) {
   });
 
 }
+$(document).ready(function () {
 
-$("#findRestaurant").on("click", function () {
+  $("#findRestaurant").on("click", function () {
+    console.log("click");
 
-  let term = $("#search").val();
+    let term = $("#search").val();
 
-  doSearch(term, {lat: coords.latitude, lon: coords.longitude});
-  
+    doSearch(term, { lat: coords.latitude, lon: coords.longitude });
+
   });
 
-  $("#btnfat").on("click", function () {
-    console.log("was clicked");
+})
 
-    let userInput = $("#search").val();
-    console.log(userInput);
-    let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function (response) {
-      let totFat = Math.floor(response.totalNutrients.FAT.quantity);
-      let fatUnit = response.totalNutrients.FAT.unit;
-      console.log(totFat + fatUnit);
-      let fatData = `
+
+
+$("#btnfat").on("click", function () {
+  console.log("was clicked");
+
+  let userInput = $("#search").val();
+  console.log(userInput);
+  let queryURL = ("https://cors-anywhere.herokuapp.com/https://api.edamam.com/api/nutrition-data?app_id=5ccbba4d&app_key=86e988946239fb88b47b787854b2e6ae&ingr=one%20" + userInput)
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    let totFat = Math.floor(response.totalNutrients.FAT.quantity);
+    let fatUnit = response.totalNutrients.FAT.unit;
+    console.log(totFat + fatUnit);
+    let fatData = `
     <div class="row">
       <div class="col s12 m6">
         <div class="card blue-grey darken-1">
@@ -77,13 +84,13 @@ $("#findRestaurant").on("click", function () {
         </div>
       </div>
     </div>`;
-      $("#dataarea").append(fatData);
+    $("#dataarea").append(fatData);
 
-    })
   })
+})
 
-  let term = $("#search").val();
-  //   let loc = $("#location").val();
+let term = $("#search").val();
+//   let loc = $("#location").val();
 
 $("#btnshya").on("click", function (response) {
   console.log("was clicked");
@@ -124,7 +131,7 @@ $("#btnMax").on("click", function () {
   $.ajax({
     url: queryURL,
     method: "GET"
-  }).then(function (response){
+  }).then(function (response) {
     console.log(response.calories);
     let calCount = ("Total Calories: ") + response.calories;
     console.log(calCount);
